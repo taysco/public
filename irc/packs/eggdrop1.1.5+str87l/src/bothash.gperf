@@ -1,0 +1,113 @@
+%{
+/*
+ * eggdrop botnet commands hash finctions
+ * gperf -N is_botnet_cmd -i1 -j1 -t -o -k 1,2,4,$ bothash.gperf
+ */
+
+#include "eggdrop.h"
+#include "proto.h"
+#include "cmdt.h"
+#include "hash.h"
+#include "tclegg.h"
+
+extern struct dcc_t dcc[];
+
+%}
+struct bot_hash {
+ char *name;
+ int (* func)PROTO((int, char *));
+};
+%%
+*trying, bot_end_trying
++ban, bot_pls_ban
++banchan, bot_pls_banchan
++bothost, bot_pls_bothost
++dnload, bot_pls_dnload
++host, bot_pls_host
++ignore, bot_pls_ignore
++upload, bot_pls_upload
+-ban, bot_mns_ban
+-banchan, bot_mns_banchan
+-host, bot_mns_host
+-ignore, bot_mns_ignore
+actchan, bot_actchan
+addxtra, bot_addxtra
+assoc, bot_assoc
+away, bot_away
+bye, bot_bye
+chaddr, bot_chaddr
+chan, bot_chan
+chat, bot_chat
+chattr, bot_chattr
+chchinfo, bot_chchinfo
+chcomment, bot_chcomment
+chdccdir, bot_chdccdir
+chemail, bot_chemail
+chhand, bot_chhand
+chinfo, bot_chinfo
+chpass, bot_chpass
+clrxtra, bot_clrxtra
+error, bot_error
+filereject, bot_filereject
+filereq, bot_filereq
+filesend, bot_filesend
+handshake, bot_handshake
+idle, bot_idle
+info?, bot_infoq
+join, bot_join
+killuser, bot_killuser
+link, bot_link
+linked, bot_linked
+motd, bot_motd
+newuser, bot_newuser
+nlinked, bot_nlinked
+part, bot_part
+ping, bot_ping
+pong, bot_pong
+priv, bot_priv
+reject, bot_reject
+resync!, bot_resync
+resync-no, bot_resync_no
+resync?, bot_resyncq
+stick, bot_stick
+thisbot, bot_thisbot
+trace, bot_trace
+traced, bot_traced
+trying, bot_trying
+uf-no, bot_ufno
+uf-yes, bot_ufobsolete
+uf-yes2, bot_ufobsolete
+uf-yes3, bot_ufyes3
+ufsend, bot_ufsend
+unaway, bot_unaway
+unlink, bot_unlink
+unlinked, bot_unlinked
+userfile?, bot_userfileq
+version, bot_version
+who, bot_who
+who?, bot_whoq
+whom, bot_whom
+xpass, bot_xpass
+zapf, bot_zapf
+zapf-broad, bot_zapfbroad
+%%
+
+/* hash function for tandem bot commands */
+void dcc_bot PROTO2(int, idx, char *, msg)
+{
+  char total[512], code[512], parsed[512];
+  struct bot_hash *bh;
+
+  context;
+  strncpy(total, msg, 511); total[511] = 0; 
+  new_nsplit(code, msg, 511);
+  if (total[0]) {
+    parsed[0] = 0;
+    strncat(parsed, check_tcl_botn(dcc[idx].sock, code, total), 511);
+    new_nsplit(code, parsed, 511);
+    msg = parsed;
+  }
+  context;
+  if ( (bh = is_botnet_cmd(code, strlen(code))) )
+    bh->func(idx, msg);
+}

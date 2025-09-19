@@ -1,0 +1,284 @@
+
+Features in eggdrop:
+"""""""""""""""""""
+
+v1.1.6s3
+
+* f..... tcl chpass core fixed. [str]
+* new binding added: "bind botn - mask proc" proc {idx code arg}
+  bind any internal botnet messages. [str]
+* new tcl command: idx2host. [str]
+* botnet idx'es now is not illegal. ie we can putidx directly to any bot
+  specially for botn bindings. [str]
+* not strip telnet codes for script and chat(see v1.1.6s5) mode of dcc. [str]
+* minor fixes for compiling under sunos [str]
+* dcclist list "bot, etc.." connections
+
+v1.1.6s4
+
+* tcl command: "bind * - *" or "bind type - *" return bindings list [str]
+
+v1.1.6s5
+
+* telnet codes \377\377 fixed [str]
+* telnet codes strip only if connected via telnet [str]
+* tcl command fork ;) [str]
+* hand2idx now work for bot connections [str]
+* some part of chanset enabled only if defined ENABLE_TCL [str]
+* chhand core fixed [str]
+
+v1.1.6s6
+
+* if config (or default "egg.config") not found then load "config"
+* idx2ip idx - return longIP
+* host2ip hostname - return longIP
+* gethost hostname - do ip address convertation
+   if hostname ==
+         longIP (like 3512730246) then return:   ip addrss (like 209.96.2.134)
+   ip address (like 209.96.2.134) then return: domain name (like irc.mo.net)
+    domain name (like irc.mo.net) then return:  ip address (like 209.96.2.134)
+                                                  or error if domain not exist
+[str]
+
+v1.1.6s6
+
+* Finally telnet users can see chr(255) [str]
+* strip +a (ANSI) also strip backspace code [str]
+
+v1.1.6s8
+
+* new tcl variables:
+#    -- Name ---------- -- Default value -----------------
+ set txt-idlekick       "idle %d min"
+ set txt-kickflag       "...and thank you for playing."
+ set txt-kickflag2      "...and don't come back."
+ set txt-kickfriend     "don't kick my friends, bud"
+ set txt-kick-fun       "that was fun, let's do it again!"
+ set txt-masskick       "mass kick, go sit in a corner"
+ set txt-massdeop       "mass deop, go sit in a corner"
+ set txt-banned         "banned"
+ set txt-banned2        "banned: "
+ set txt-bogus-username "bogus username"
+ set txt-bogus-chankey  "bogus channel key"
+ set txt-bogus-ban      "bogus ban"
+ set txt-abuse-ops      "abusing ill-gained server ops"
+ set txt-abuse-desync   "abusing desync"
+ set txt-nickflood      "nick flood"
+ set txt-flood          "flood"
+ set txt-lemmingbot     "lemmingbot"
+ set txt-password       "Enter your password."
+ set txt-negative       "Negative on that, Houston."
+
+[str]
+
+v1.1.6s8++
+
+ set cycle-channels - cycle opless channels [str]
+ fixed doc/tcl-commands.doc for time bind
+ fixed remote overflow [str]
+ flush-msgq - flush message query... [str]
+ empty-msgq - empty message and help queryes [str]
+ check-bogus - check for bogus usernames/abusing/etc... and kicks.. [str]
+ removed check for permbans..
+ removed notice about how to read NOTES..
+ new botnet command added: 'signal <SIGxxx> text' [str]
+ don't unban expired global bans
+ dumpserv - putsetv w/o any querying.. [str]
+ ignore-sighup - ignore SIGHUP signal (don't rehash)
+ ignore-sigterm - ignore SIGTERM signal (don't write userfile)
+ .dump work faster (w/o any queue)
+ botnet command 'uf-done' when userfile transferred
+ fixed userfile transfer bug (userfile not done transferred) (if dcc idx 0)
+>[str8.5] opless bot no more trying to set mode +l -1
+ evaltime - analog of tcl time command (return evaluation time)
+ bind-time = 1 log bind evaluation time, = 2 also log all bindings before eval
+ errors also point error line in tcl script
+ dcc .error command display last error description
+ resynch/share tbuf no more affected by damn max-queue-msg BLAH!
+ resolve-ip - resolve ip on telnet
+ new password send via botnet encrypted
+ if channel file defined but doesn't exists - bot starting anyway...
+ wait-info now affects notice about waiting notes
+ -enforcebans means also don't kick/ban +k users on join
+ don't ask for topic mode on join channel
+ when someone get oped don't ask /who (flood protect)
+ new autoop policy: person autooped if they have +o in userlist AND already
+  oped on some common with bot channel
+ never go to file area directly from dcc chat - use .files from partyline..
+ bots w/o password is not allowed to connect.
+ a few little bugfixes/modifications/etc....
+ md5string and md5file tcl commands.
+ argc, argv0, argv now have right values
+ msgrate tcl variable
+ chanfile little changed + save modes for static channels
+ channel add - don't join channel if bot already on it
+ secure channel file - don't execute any tcl command from it
+ clear sensitive data on fatal exit
+ amount of resync buffers increased from 4 to 20
+ when share userfile - bots send it via userfile (not via resync buffer)
+ dcc send permitted ONLY for +x users
+ dcc chat permitted only for +p users!
+ save/reload chan/userfile always via tcl function
+ #include <Solar Designer`s strfix.h/stdiofix.h> + similar for nsplit
+ share userfile name changed to prevent conflicts if 2 bots run in same dir
+ show-query 1 - show server out queryes
+
+v1.1.6s8.6
+
+* sort user's hostmasks by usage
+* botchk changed long time ago
+* filename pid.Botname changed to Botname.pid to stop using old botchk
+* nasty bug with listen off and unlinking bots fixed
+* listen now return table of listening ports:
+   listen, listen *, listen * * - all
+   listen <port>, listen <port> * - matching this port
+   listen <port> <type>, listen * <type> - matchning this type
+  output format: <sock> <type> <script/mask> <port>
+* new `putbotnet' command:
+   putbotnet * <text> - put text in botnet
+   putbotnet bot <text> - put text to this bot in botnet stream
+   putbotnet idx <text> - same by index
+   putbotnet !bot <text> - put text in botnet except this bot
+   putbotnet -idx <text> - same by index
+* if bot join new channel and don't got op - don't cycle
+* opless_bots_alone_on_channel strategy changed
+
+v1.1.6s8.7
+
+* after leaf bot get userfile it delete all old bots who don't have
+   +a or +h or +u flags (i.e. obsoleted bots)
+* socket-end tcl variable - end of socket for control tcl function (def: "")
+* tcl `nice' command - set bot process priority
+* tcl variable `config' like 1.3.x eggdrops have
+* some crypto things added (random numbers more random now)
+* old file descriptor leaks removed
+* if tcl version > 7.4 then execute tcl events too
+* after bot download userfile id delete obsoleted non hub bots
+* if DROP_CORE defined eggdrop now drop core files (default)
+* if SHOW_CONTEXT undefined eggdrop will not show contexts on crash
+* A _LOT_ bugs fixed and speed also improved (big work)
+  (overflows, memory and file descriptor leaks, reading uninitialized memory,
+   pointer bugs, etc..)
+* for speed up binds handling introduced new order:
+   binds match exact only: raw (no more wildcards for raw)
+   binds match exact and/or `*' only: botn, ctcp, ctcr (`*' binds match latest)
+   all other binds work same (wildcards and partial) (ex.: dcc, filt, ..)
+* partyline chat should go only to bots with online users (i.e. if bot
+   don't has logged in users it don't receive your talk)
+* tcl bots command extended to `bots ?option? ?botname?'
+   bots tandem - return list all tandem bots in botnet (same as just bots)
+   bots tandem botnick - return 1 if bot in botnet, 0 if else
+   bots linked - return list of directly linked bots
+   bots linked botnink - return 1 if bot linked, 0 if else
+   bots shared - return list of current sharebots
+   bots shared botnick - return 1 if bot is sharebot now, 0 else
+   bots userfile - list of bots who download userfile
+   bots userfile botnick - 1 if this bot download userfile, 0 else
+   bots download etc - same as `bots userfile'
+   bots party - list of bots with users on partyline
+   bots party botnick - 1 if bot has users on partyline
+    options can be abbreviated to 1st letter
+* ishelper tcl command return 1 is user TS4 helper.. (think will be useless)
+  +h +e modes support in bot (pass to tcl scripts, if enforcebans then +e
+   always removed, if user banned and in exception list - dont kick him)
+* chanexceptions tcl command return list of channel exceptions
+* config file name is "config" and can't be changed to other (because)
+* ".chpass botnick !" - make bot allowed to link in (default not allowed)
+* tcl command `idea' - encryptiong using IDEA algorithm in cfb64 mode
+   idea e key text  -return encrypt text
+   idea d key blablabla  -return decrypt text
+   idea E key text  -return encrypt with seed text
+   idea D key blablabla  -return decrypt encrypted with seed text
+* tcl command `recrypt' - copy encrypted file with key change
+   recrypt common inFile outFile  -change from _my_ to _common_ key
+   recrypt my inFile outFile  -change key from _common_ to _my_
+   (for example this command need for distroing something over botnet)
+* tntkey tool - file encryption tool
+* botnet links, userfile share, relay connections - all encrypted
+* `listen telnet port' - listen for plain telnet users
+   all other - users / all / bots - is encrypted only.
+* server-lag tcl variable - lage between bot and irc server in seconds
+* client-flood tcl variable - how much data server can get without processing
+* `msg' and `help' queue work faster with better flood protection
+* max-queue-msg tcl variable obsoleted
+* make modules disabled
+* `-H addr' command line option or IRCHOST env variable set vhost address
+   other eggdrop options except `-v' removed
+* mircnick tcl variable is nick of bot for mIRC's /dcc chat IP:PORT
+
+v1.1.6s8.7c
+
+* tcl command `chanlist' extended, in flags filed can be added `@', `+',
+   or `%' which make list restricted to users who has op, voice or help mode
+   Example: `chanlist #dropzone @bo' will return list of oped bots
+* performance improvements (should eat less less CPU)
+
+v1.1.6s8.7h
+
+* tcl command `notes' extended
+   notes handle number  - return one note (number begin from 0)
+   notes handle *  - return all notes
+   notes -delete handle number|*  - delete returned notes from notefile
+* added option -all to tcl command `hand2nick', that mean return list of
+   all nicks
+
+v1.1.6s8.7i
+
+* rsaref stuff work w/o problem on 64-bit CPU like ALPHA
+
+v1.1.6s8.7j
+
+* tcl comman `chanlist' extended again, added option `-hops', example:
+   `chanlist -hops -1 #channel'  - return list of users which hops <= 1
+   `chanlist -hops 1- #channel'  -  --"-- hops >= 1
+   `chanlist -hops - #channel'   -  --"-- hops known
+   `chanlist -hops ? #channel'   -  --"-- hops unknown
+   hop values going from /who reply
+* added tcl command `randomize'  - randomize order of elements in list
+   options: `-seed <number>'  - predefine seed value
+    `-reversable'  - randomize on -reversable'd list restore order
+* added tcl command `stricmp'  - case insensitive compare of strings
+* added tcl command `inlist ?-del? ?-all? list string ?string...?'
+  check if string(s) exist in list and delete them, examples:
+   `inlist {abc\{ {DEF} {DEF}} qwe def'     - return 1 (case insensitive scan)
+   `inlist -all {qwe {DEF} "def"} qwe def'  - return 3 (case insensitive scan)
+   `inlist -case {abc\{ {DEF} DEF} def'       - return 0 (case sensitive scan)
+   `inlist -del {abc\{ {DEF} {DEF}} def'   - return list w/o 1st found element
+   `inlist -del -all {abc\{ {DEF} {DEF}} def'    - delete all matched elements
+ because i tired of lsearch, string tolower, and other fun..
+* on crash dump stack trace (if compiled with gcc on Intel's x86 CPU) (Should;)
+* tcl variable `fini-server' a la init-server but on disconnects
+* tcl variable `try-server' executed on connection attempts
+* oh, i forgot somewhere in v1.1.6s8.7 section: userfile read before config
+
+v1.1.6s8.7k
+
+* tcl variable `max-bans' (by default set to 25 for efnet)
+* on +bitch channel +m can't op -o users
+* masskick and massdeop protection strategy changed
+* bot don't try to set illegal bans (which ircd will discard anyway)
+* added tcl `crypt' function for compatibility with CORE eggdrop
+
+v1.1.6s8.7l
+
+* `.status scripts' and `.status all' and Tcl array `scripts' show script's
+  load time and errors
+* new switch for putdcc command `-prefix', prefix each line with prefix string
+  also it not eat 1 char per line on long lines anymore
+* server socket is dcc socket now (can do putidx/killdcc/etc)
+* bot can pass +d to scripts and auto -d if +enforcebans, pushmode +d works too
+* killdcc work correct with scripts (controls)
+* `control -one idx comand' not nested controls i.e. next controls on already
+  controlled idx just replace command
+* `control idx' return current command for idx, if no control then empty command
+* `control idx {}' removes all nested controls (if any)
+  `control -one idx {}' remove only top control
+* added option `-top' to putserv and puthelp - put line on top ot queue
+  putserv/puthelp also return size of filled queue
+* idx2ip return IP of outgoing connections too
+* forgot log in 8.7j `udpsend host port data' send udp datagram [by phifli]
+* vialtual channel mode `pushmode #chan +B nick' (-B allowed too)
+   mark nick as "bad" (i.e. allowed in massdeop/masskick)
+* putbot extended to `putbot nick1,nick2,.. text', also nick can be '*'
+
+_

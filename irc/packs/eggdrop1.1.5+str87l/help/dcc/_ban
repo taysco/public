@@ -1,0 +1,5 @@
+%{+O}
+###  -ban <hostmask OR number>
+   Removes the ban from the list of permanent bans stored on the
+   bot -- you may reference the ban by the number shown in '.bans'.
+See also: bans, +ban, kickban, stick, unstick

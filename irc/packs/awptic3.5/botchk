@@ -1,0 +1,40 @@
+#!/bin/sh
+# crontab: 11,22,33,44,55 * * * * /home/mydir/botchk >/dev/null 2>&1
+
+botdir="/home/mydir/mybot"
+botname="Doofy"
+botscript="eggdrop"
+userfile="$botname.u"
+
+########## you probably don't need to change anything below here ##########
+
+if test -r $botdir/pid.$botname; then
+  botpid=`cat $botdir/pid.$botname`
+  if `kill -CHLD $botpid >/dev/null 2>&1`; then
+    exit 0
+  fi
+  echo "Stale pid.$botname file (erasing it)"
+  rm -f $botdir/pid.$botname
+fi
+echo "Couldn't find the bot running.  Reloading it..."
+cd $botdir
+PATH=.:$PATH
+# Check for userfile first
+if test -r $userfile; then
+  $botscript
+  exit 0
+fi
+if test -r $userfile~new; then
+   echo "Userfile missing.  Using last saved userfile..."
+   mv $userfile~new $userfile
+  $botscript
+  exit 0
+fi
+if test -r $userfile~bak; then
+   echo "Userfile missing.  Using backup userfile..."
+   cp $userfile~bak $userfile
+  $botscript
+  exit 0
+fi
+echo "No userfile.  Could not reload the bot.."
+exit 0

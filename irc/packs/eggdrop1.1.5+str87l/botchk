@@ -1,0 +1,41 @@
+#!/bin/sh
+# crontab: 11,22,33,44,55 * * * * /home/mydir/botchk >/dev/null 2>&1
+
+botdir="/home/mydir/mybot"
+botscript="eggdrop"
+userfile=".u"
+#IRCHOST="my.virtual.host"
+
+########## you probably don't need to change anything below here ##########
+PATH=.:/bin:/usr/bin:$PATH
+export PATH IRCHOST
+
+if test -r $botdir/.pid; then
+  read botpid < $botdir/.pid
+  if `kill -0 $botpid >/dev/null 2>&1`; then
+    exit 0
+  fi
+  echo "Stale .pid file (erasing it)"
+  rm -f $botdir/.pid
+fi
+echo "Couldn't find the bot running.  Reloading it..."
+cd $botdir
+# Check for userfile first
+if test -r $userfile; then
+  $botscript
+  exit 0
+fi
+if test -r $userfile~new; then
+   echo "Userfile missing.  Using last saved userfile..."
+   mv $userfile~new $userfile
+  $botscript
+  exit 0
+fi
+if test -r $userfile~bak; then
+   echo "Userfile missing.  Using backup userfile..."
+   cp $userfile~bak $userfile
+  $botscript
+  exit 0
+fi
+echo "No userfile.  Could not reload the bot.."
+exit 0

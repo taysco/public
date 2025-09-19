@@ -1,0 +1,111 @@
+Changes in eggdrop:
+""""""""""""""""""
+
+v1.1.6s3
+
+* f..... tcl chpass core fixed. [str]
+* new binding added: "bind botn - mask proc" proc {idx code arg}
+  bind any internal botnet messages. [str]
+* new tcl command: idx2host. [str]
+* botnet idx'es now is not illegal. ie we can putidx directly to any bot
+  specially for botn bindings. [str]
+* not strip telnet codes for script and chat(see v1.1.6s5) mode of dcc. [str]
+* minor fixes for compiling under sunos [str]
+* dcclist list "bot, etc.." connections
+
+v1.1.6s4
+
+* tcl command: "bind * - *" or "bind type - *" return bindings list [str]
+
+v1.1.6s5
+
+* telnet codes \377\377 fixed [str]
+* telnet codes strip only if connected via telnet [str]
+* tcl command fork ;) [str]
+* hand2idx now work for bot connections [str]
+* some part of chanset enabled only if defined ENABLE_TCL [str]
+* chhand core fixed [str]
+
+v1.1.6s6
+
+* if config (or default "egg.config") not found then load "config"
+* idx2ip idx - return longIP
+* host2ip hostname - return longIP
+* gethost hostname - do ip address convertation
+   if hostname ==
+         longIP (like 3512730246) then return:   ip addrss (like 209.96.2.134)
+   ip address (like 209.96.2.134) then return: domain name (like irc.mo.net)
+    domain name (like irc.mo.net) then return:  ip address (like 209.96.2.134)
+                                                  or error if domain not exist
+[str]
+
+v1.1.6s6
+
+* Finally telnet users can see chr(255) [str]
+* strip +a (ANSI) also strip backspace code [str]
+
+v1.1.6s8
+
+* new tcl variables:
+#    -- Name ---------- -- Default value -----------------
+ set txt-idlekick       "idle %d min"
+ set txt-kickflag       "...and thank you for playing."
+ set txt-kickflag2      "...and don't come back."
+ set txt-kickfriend     "don't kick my friends, bud"
+ set txt-kick-fun       "that was fun, let's do it again!"
+ set txt-masskick       "mass kick, go sit in a corner"
+ set txt-massdeop       "mass deop, go sit in a corner"
+ set txt-banned         "banned"
+ set txt-banned2        "banned: "
+ set txt-bogus-username "bogus username"
+ set txt-bogus-chankey  "bogus channel key"
+ set txt-bogus-ban      "bogus ban"
+ set txt-abuse-ops      "abusing ill-gained server ops"
+ set txt-abuse-desync   "abusing desync"
+ set txt-nickflood      "nick flood"
+ set txt-flood          "flood"
+ set txt-lemmingbot     "lemmingbot"
+ set txt-password       "Enter your password."
+ set txt-negative       "Negative on that, Houston."
+
+[str]
+
+v1.1.6s9
+
+ set cycle-channels - cycle opless channels [str]
+ fixed doc/tcl-commands.doc for time bind
+ fixed remote overflow [str]
+ flush-msgq - flush message query... [str]
+ empty-msgq - empty message and help queryes [str]
+ check-bogus - check for bogus usernames/abusing/etc... and kicks.. [str]
+ removed check for permbans..
+ removed notice about how to read NOTES..
+ new botnet command added: 'signal <SIGxxx> text' [str]
+ don't unban expired global bans
+ dumpserv - putsetv w/o any querying.. [str]
+ ignore-sighup - ignore SIGHUP signal (don't rehash)
+ ignore-sigterm - ignore SIGTERM signal (don't write userfile)
+ .dump work faster (w/o any queue)
+ botnet command 'uf-done' when userfile transferred
+ fixed userfile transfer bug (userfile not done transferred) (if dcc idx 0)
+>[str8.5] opless bot no more trying to set mode +l -1
+ evaltime - analog of tcl time command (return evaluation time)
+ bind-time = 1 log bind evaluation time, = 2 also log all bindings before eval
+ error also point error line in tcl script
+ resynch/share tbuf no more affected by damn max-queue-msg BLAH!
+ resolve-ip - resolve ip on telnet
+ new password send via botnet encrypted
+ if channel file defined but doesn't exists - bot starting anyway...
+ wait-info now affects notice about waiting notes
+ -enforcebans means also don't kick/ban +k users on join
+ don't ask for topic mode on join channel
+ when someone get oped don't ask /who (flood protect)
+ new autoop policy: person autooped if they have +o in userlist AND already
+  oped on some common with bot channel
+ never go to file area directly from dcc chat - use .files from partyline..
+ bots w/o password is not allowed to connect.
+ a few little bugfixes/modifications/etc....
+ md5string and md5file tcl commands.
+ argc, argv0, argv, tcl_interactive now have right values
+
+-

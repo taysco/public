@@ -1,0 +1,119 @@
+**********************************************
+*   ___   __ _  __ _  __| |_ __  ___  _ __   *
+*  / _ \ / _` |/ _` |/ _` | '__|/ _ \| '_ \  *
+* |  __/| (_| | (_| | (_| | |  | (_) | |_) | *
+*  \___| \__, |\__, |\__,_|_|   \___/| .__/  *
+*        |___/ |___/                 |_|     *
+*                                            *
+*         v1.1.5+rufus1.4.9+mikee0.2         *
+**********************************************
+
+Intro
+=====
+
+Well, it aint rocket science, and now I've made it for 1.1.5+rufus.
++rufus is a series of updates to base 1.1.5 by Rufus@EFnet who also
+regularly works on current eggdrop development. If you aren't familiar
+with his work on 1.1.5, take a look at UPDATES+rufus at
+http://rufus.bots.de/eggdrop. It fixes alot of bugs and adds quite a few
+features that otherwise would make this encryption work worthless.
+
+Supports
+========
+Everything I've added should work with no problems on any operating
+system. So if eggdrop1.1.5+rufus worked on it, so should
+eggdrop1.1.5+rufus+mikee. 
+
+Features
+========
+
+Here are the significant features that I've added on top of Rufus` stuff:
+
+* bot encryption. this includes tcl, userfile, chanfile, botnet, and
+  notes. I interpret the encrypted files within eggdrop code so it no
+  longer needs a modified TCL library to read encrypted files. However,
+  this feature's side-effect is that TCL errors are very very
+  undescriptive. So work out any bugs in your TCL with a plain
+  eggdrop1.1.5+Rufus before using them here.
+  
+* a simple random challenge/response for bot links
+  after adding the bot<-> encryption, I realized that it still allowed
+  anyone to login to your bot by sniffing a bot link session. The reason
+  this is possible is because even though the password sent by a bot is
+  encrypted, its always going to be encrypted the same way every time.
+  This really doesn't let anyone do or read anything of value by sniffing
+  (its all encrypted), but it just something i feel shouldn't happen. So I
+  randomized the encrypted login by having the 'hub' bot send a simple
+  random-text challenge which it will expect in the encrypted password 
+  response.
+
+Installation
+============
+
+Steps to make eggdrop1.1.5+rufus1.4.9+mikee0.2:
+1. tar -zxf eggdrop1.1.5+rufus1.4.9+mikee0.2.tgz
+2. cd eggdrop1.1.5+rufus1.4.9+mikee0.2
+3. ./configure
+4. edit encrypt/encrypt.h to your liking, read carefully
+5. make eggdrop
+6. done?
+
+Misc.
+=====
+* type 'make encrypt' after making the bot. This will (in theory) create
+  a utility called 'encrypt' inside the encrypt/ directory which you can
+  use to encrypt your config/scripts and old userfiles if available. If
+  you modify encrypt/encrypt.h you will always have to re-make this
+  program and re-encrypt your files. If 'make encrypt' doesn't work,
+  just try the following:
+	cd encrypt
+	gcc -c *.c
+	gcc -o encrypt *.o
+
+* WARNING! use of this bot as-is does not gaurantee someone will not be
+  able to decrypt your tcls and 'hack' your bot. There are certain things
+  you give up when distributing public source code, such as the ability to
+  obfuscate the key. You WILL have to do this on your own and I highly
+  recommend you do it, otherwise it is very trivial to get and use the key
+  to read your files and decrypt your bot communication.
+
+Known Problems
+==============
+* I've tested this bot out considerably more than I ever did for
+  1.3.29+mC, but I'll be the first to question my ability to write
+  error-free code, so I welcome any corrections/patches. Feel free to
+  tear this bot to pieces, TRY to break it! Its the only way things get
+  fixed usually.
+
+* There is always a given amount of overhead when trying to
+  encrypt/decrypt realtime communication, specifically this bot uses
+  considerably more memory than a normal 1.1.5 would. I feel this is due
+  to eggdrop's design being very patchy and many of its features, like I/O
+  over sockets, is done with many varying functions (some low-level, some 
+  high) which forces me to modify countless spots of code instead of just
+  a few functions. In other words, I just WISH I could consolidate this
+  encryption stuff to a few procedures, but I cant.
+
+* Blowfish! I don't feel blowfish is inherently weak, esp. for something
+  as non-vital as eggdrop or IRC. But I do recommend that people
+  substitute the blowfish encrypt_string/decrypt_string functions with 
+  their own functions that use other encryption algorithms. It only helps
+  your bot be more secure if people dont know what your stuff is encrypted
+  with. Please note that the blowfish functions return a dynamically 
+  allocated array of characters which my code assumes must be freed.
+
+FUTURE
+======
+* Would it be a better idea for bots to negotiate a random key for
+  communication by first using the botnet-key ? I think so. It can only
+  help make things less decipherable.
+
+* Encrypted user-telnets? Sure, write a patch for me! I've heard of people
+  adding ssh-like features to eggdrop. I'd sure like to steal THAT.
+
+* Security-related eggdrop features. If you've got an idea that you think
+  can be worthwile in an open-source eggdrop, hit me up with it. 
+
+* Non security-related eggdrop features. I'm happy to entertain
+  suggestions but I think you'd be better off asking someone like Rufus 
+  to do it, then I can just add the code to my bot.

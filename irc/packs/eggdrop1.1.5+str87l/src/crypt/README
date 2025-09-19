@@ -1,0 +1,43 @@
+
+ -- DO NOT DISTRIBUTE THIS PACKAGE -- FOR PRIVATE TNT USE ONLY --
+ -- DO NOT DISTRIBUTE THIS PACKAGE -- FOR PRIVATE TNT USE ONLY --
+ -- DO NOT DISTRIBUTE THIS PACKAGE -- FOR PRIVATE TNT USE ONLY --
+
+------------
+- feb 1999 - TNT's eggdrop encryption
+------------
+
+Cypher used:
+ 128bit key IDEA in cfb64 mode
+IDEA implementation coded by Eric Young (eay@cryptsoft.com)
+IDEA homepage: http://www.r3.ch/products/idea/
+Pseudo random numbers and Diffie-Hellman implementation:
+ MD5 (128bit hash) based PRNG from RSAREF2
+ 576 bit Diffie-Hellman parameters
+RSAREF Copyright (C) RSA Laboratories, a division of RSA Data Security,
+Inc., created 1991. All rights reserved.
+
+_____________________________________________________________________
+*** here used functions from:
+***
+rsaref2:
+ random generator, md5, Diffie-Hellman, base64
+ (r_random.c r_random.h r_stdlib.c r_encode.c md5.h global.h(*) md5c.c)
+ (r_dh.c nn.c prime.c digit.c prime.h digit.h rsaref.h(*) nn.h)
+   global.h - fixed bug with 64bit Alpha CPU
+   rsaref.h - added TNT's #ifdefs
+libidea-0.8.2b:
+ idea cfb64 implementation (i_cfb64.c i_skey.c idea.h idea_lcl.h)
+Poul-Henning Kamp:
+ md5 string and file operations (md5hl.c(*))
+base64.c:
+ from admirc (from apache)
+str:
+ crypted file i/o operations (cfile.c cfile.h tntkey.c)
+---
+(*) file modifyed
+_____________________________________________________________________
+
+ -- DO NOT DISTRIBUTE THIS PACKAGE -- FOR PRIVATE TNT USE ONLY --
+ -- DO NOT DISTRIBUTE THIS PACKAGE -- FOR PRIVATE TNT USE ONLY --
+ -- DO NOT DISTRIBUTE THIS PACKAGE -- FOR PRIVATE TNT USE ONLY --
